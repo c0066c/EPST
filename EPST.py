@@ -35,11 +35,6 @@ def probabilisticTest_pt(tasks, numDeadline, bound):
     res = 0
     for i in tasks:
         hpTasks = tasks[:x]
-        '''
-        if x != len(tasks)-1:
-            x+=1
-            continue
-        '''
         x+=1
         if numDeadline == 1:
             resP = ktda_pt(i, hpTasks, 'abnormal_exe', bound)
@@ -77,12 +72,7 @@ def probabilisticTest_ptda_pt(tasks, numDeadline, bound):
     x = 0
     res = 0
     for i in tasks:
-        hpTasks = tasks[:x]
-        '''
-        if x != len(tasks)-1:
-            x+=1
-            continue
-        '''
+        hpTasks = tasks[:x]        
         x+=1
         resP = ptda_pt(i, hpTasks, 'abnormal_exe', bound)
         seqP.append(resP)
@@ -103,7 +93,6 @@ def probabilisticTest_po(tasks, numDeadline, bound):
     return max(seqP)
 
 def determineWorkload(task, higherPriorityTasks, criteria, time):
-#    print time
     workload = task[criteria]
     for i in higherPriorityTasks:
         jobs = math.ceil(time / i['period'])

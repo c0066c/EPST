@@ -14,35 +14,17 @@ from matplotlib.backends.backend_pdf import PdfPages
 name='test'
 
 # Information about the general task set
-#tasksinBkt = [5, 10, 20]
 tasksinBkt = [10]
 
 # Information about the mixed task set
-#hardTaskPercentage = [100.0]
-#wcetF1 = 1.3/1.2
 wcetF2 = 2.2/1.2
-wcetF3 = 3.4/1.2
-wcetF4 = 1.7/1.4
-
-#faultRate = [10**-12., 10**-10., 10**-17.]
-#faultRate = [10**-4., 10**-5., 10**-6., 10**-7., 10**-8., 10**-9., 10**-10.]
 faultRate = [10**-6., 10**-7., 10**-8., 10**-9.]
-#faultRate = [10**-6.]
-#toleratedRate = [10**-5., 10**-6., 10**-7.]
-#toleratedRate = [10**-12.]
-
-#hardTaskFactor = [wcetF4]
-#hardTaskFactor = [wcetF4, wcetF2, wcetF3]
 hardTaskFactor = [wcetF2]
-#numDeadline = [1, 2, 3]
 numDeadline = [3]
-#hardTaskWCETFactor = 2.2/1.2
-#softTaskWCETFactor = 2.2/1.2
 
 tasks=[]
 def func_star(a_b):
     """Covert 'f([a,b,c,d,e,f]) to f(a,b,c,d,e,f) call."""
-#    print "once "
     return insideroutine(*a_b)
 
 def insideroutine(numberOfRuns, fr):

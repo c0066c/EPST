@@ -16,12 +16,7 @@ name='test'
 tasksinBkt = [10]
 
 # Information about the mixed task set
-#hardTaskPercentage = [100.0]
-#wcetF1 = 1.3/1.2
 wcetF2 = 2.2/1.2
-wcetF3 = 3.4/1.2
-wcetF4 = 1.7/1.4
-
 ErrorRate = [10**-6., 10**-7., 10**-8., 10**-9.]
 tr = 10**-12.
 
@@ -93,34 +88,3 @@ for htf in hardTaskFactor:
             file.write('\n')
             count+=1
         file.close()
-
-        '''
-        # plot in pdf
-        pp = PdfPages(folder + fileName + '.pdf')
-        title = 'NumMisses:'+repr(nd) + ', Utilization:'+repr(percentageU)
-        plt.title(title, fontsize=10)
-        plt.grid(True)
-        plt.ylabel('Probability of Failure')
-        plt.xlabel('Error rate')
-        ax = plt.subplot()
-        ax.set_yscale("log")
-        ind = np.arange(4)
-        width = 0.35
-        ax.set_xticks(ind + width)
-        ax.set_xticklabels(('10^-6','10^-7', '10^-8','10^-9'))
-        for i in perError:
-            for j in i:
-                try:
-                    ax.bar(ind+width, j, width, color='y')
-                except ValueError:
-                    print "ValueError"
-        for i in perError_dis:
-            for j in i:
-                try:
-                    ax.bar(ind+width, j, width, color='y')
-                except ValueError:
-                    print "ValueError"
-        pp.savefig()
-        plt.clf()
-        pp.close()
-        '''

@@ -11,8 +11,6 @@ import matplotlib.pyplot as plt
 import itertools
 from matplotlib import rcParams
 from matplotlib.backends.backend_pdf import PdfPages
-#import edf_vd
-#import rounded_mixed_task_builder
 
 name='test'
 stampEPST=[]
@@ -24,11 +22,7 @@ tasksinBkt = [10]
 
 # Information about the mixed task set
 wcetF2 = 2.2/1.2
-wcetF3 = 3.4/1.2
-wcetF4 = 1.7/1.4
-
 faultRate = [10**-6.]
-
 hardTaskFactor = [wcetF2]
 numDeadline = [1]
 
@@ -44,9 +38,6 @@ for tib in tasksinBkt:
     for htf in hardTaskFactor:
         for nd in numDeadline:
             for percentageU in range(60, 61, 10):
-            #for percentageU in range(10, 11, 10):
-#            for percentageU in range(30, 31, 10):
-#            for percentageU in range(100, 101, 10):
                 for fr in faultRate:
                     numberOfRuns = 500
                     print('Tasks: ' + repr(tib) +', NumDeadline:'+repr(nd)+', FaultRate:'+repr(fr))+', Utilization:'+repr(percentageU)
@@ -64,7 +55,7 @@ for tib in tasksinBkt:
                         #the following part is for testing
 
                         timing.tlog_start("CPRTA starts", 1)
-#                        resEPSTK = cprta.cprtao(tasks)
+                        resEPSTK = cprta.cprtao(tasks)
                         timing.tlog_end("CPRTA ends", stampCPRTA, 1)
 
                         if len(stampCPRTA) > 0:

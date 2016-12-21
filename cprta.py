@@ -13,13 +13,15 @@ skipcount = 0
 
 def handler(signo, frame):
     raise RuntimeError
+	
 def reportSkipTimes():
     return skipcount
 
 def sortRandVar( var ):
     #sort a random variable in increasing order of its values (first) line)
     return sorted(var, key = lambda x:x[0])
-
+#print sortRandVar([])
+	
 def dco(A, B):
     C = B[:]
     for i in A:
@@ -60,7 +62,8 @@ def dcfc(A, B):
                 else:
                     res[flag][1]=res[flag][1]+tmpP
     return sortRandVar(res)
-
+#print dcfc([[3, 0.1],[7, 0.9]],[[0, 0.9],[4, 0.1]])
+	
 def cprtao(tasks):
     #special routine for only testing the latest task
     #compute the response time distribution of the least prioritary task in a given taskset in a study interval.
@@ -92,17 +95,14 @@ def cprtao(tasks):
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(60*8*60)
-            for j in range(1, int(math.floor(r[0][0]))+1):
-                #if j % 5 == 0:
-                   # print j
+            for j in range(1, int(math.floor(r[0][0]))+1):                
                 tmpalist = []
                 countq = 0
                 for k, p in zip(hpTasks, hpPeriods):
                     RtarMC=max(Rtar, key =lambda y:y[0])
                     AjMin=min(alist[countq], key =lambda y:y[0])
                     peri=int(math.floor(AjMin[0]))
-                    #print RtarMC, AjMin, peri
-                    #print
+                    
                     if RtarMC[0]>AjMin[0] and peri == j: #TDA
                         Rtar = doPreemption(Rtar, alist[countq], k)
                         alist[countq] = dcfc(alist[countq], p) #prob = 1
@@ -111,8 +111,7 @@ def cprtao(tasks):
             global skipcount
             Rtar = [[0,1]]
             skipcount+=1
-        Rtar = sortRandVar(Rtar)
-        #print Rtar
+        Rtar = sortRandVar(Rtar)        
 
         tmp = 0.0
         for k in Rtar:
@@ -120,6 +119,7 @@ def cprtao(tasks):
                 tmp = tmp + k[1]
         seqP.append(tmp)
     return max(seqP)
+	
 def cprta(tasks):
     #compute the response time distribution of the least prioritary task in a given taskset in a study interval.
     x = 0
@@ -144,33 +144,25 @@ def cprta(tasks):
         hpPeriods = plist[:x]
 
         Rtar = i
-#        print "prev:",Rtar
         for j, k in zip(hpTasks,hpPeriods):
             Rtar = dcfc(Rtar, j)#convolution for C
             alist.append(k)
-#        print "after:",Rtar
         try:
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(60*10)
             for j in range(1, int(math.floor(r[0][0]))+1):
-    #            print "DeadlineJ -", int(math.floor(r[0][0]))
-    #            if j % 5 == 0:
-    #                print j
-    #            c+=1
                 tmpalist = []
                 countq = 0
                 for k, p in zip(hpTasks, hpPeriods):
-    #                print "preempted by -",countq+1
                     RtarMC=max(Rtar, key =lambda y:y[0])
                     AjMin=min(alist[countq], key =lambda y:y[0])
-                    #print RtarMC, AjMin, j
+                    
                     peri=int(math.floor(AjMin[0]))
                     if RtarMC[0]>AjMin[0] and peri == j: #TDA
-                        #print RtarMC, AjMin, j
-    #                    print "oldq:",alist[countq]
+
                         Rtar = doPreemption(Rtar, alist[countq], k)
                         alist[countq] = dcfc(alist[countq], p) #prob = 1
-    #                    print "newq:",alist[countq]
+
                     countq+=1
         except RuntimeException:
             global skipcount
@@ -180,21 +172,16 @@ def cprta(tasks):
 
 
         x+=1
-#        print "task-",x, Rtar
         #find DMP
         tmp = 0.0
-#        print "DeadlineJ-", r[0][0]
         for k in Rtar:
             if k[0] > r[0][0]:
                 tmp = tmp + k[1]
         seqP.append(tmp)
-#    print
-#    print "Max probability among all the tasks-", max(seqP)
+
     return max(seqP)
 
-def constructHeadTail(randVar, arrival):
-    #print "ADasd"
-    #print randVar, arrival
+def constructHeadTail(randVar, arrival):    
     boolean_head_tail = []
     #head is made up of ones, tail is made up of zeros
     for n in randVar:
@@ -202,7 +189,6 @@ def constructHeadTail(randVar, arrival):
             boolean_head_tail.append(1)
         else:
             boolean_head_tail.append(0)
-#    print boolean_head_tail
     head = []
     tail = []
     for j, i in zip(boolean_head_tail, randVar):
@@ -219,7 +205,6 @@ def constructHeadTail(randVar, arrival):
 def doPreemption(cRsp, Aj, C):
     #integrates the preemption effect of a job
     #given the response time at the current stage, and the arrival time distribution of a preemption of a preempting job and its execution distribution, it outputs the updated response time
-#    print cRsp, Aj, C
     intermediateR = []
     fake = []
     counti=1
@@ -230,7 +215,6 @@ def doPreemption(cRsp, Aj, C):
         for j in preemption:
             preemptionvalue.append(j[0])
             preemptionprob.append(j[1])
-#        print preemptionvalue
         for j in preemptionprob:
             fake.append([0, j])
         [head, tail] = constructHeadTail(cRsp, preemptionvalue)
@@ -238,9 +222,7 @@ def doPreemption(cRsp, Aj, C):
             pass
         else:
             tail = dcfc(tail, C)
-#            print tail
-#        print "h:",head
-#        print "t:",tail
+
         tmp = dco(head, tail) #coalescion
         head = tmp[:]
         resintermediate = dcfc(fake, head)
@@ -252,7 +234,7 @@ def doPreemption(cRsp, Aj, C):
 
 
 
-#print dcfc([[3, 0.1],[7, 0.9]],[[0, 0.9],[4, 0.1]])
 
 
-#print sortRandVar([])
+
+
