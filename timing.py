@@ -1,3 +1,9 @@
+'''
+Author: Kuan-Hsun Chen
+Referring to the existing solution on stackoverflow.com for time mesurement.
+http://stackoverflow.com/questions/1557571/how-to-get-time-of-a-python-program-execution
+'''
+
 import atexit
 from time import clock
 
