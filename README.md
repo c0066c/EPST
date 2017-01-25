@@ -9,7 +9,7 @@ mp-frVsProb.py is used to generate the results on multiprocessors.
 
 mp-frVsProb_dml.py is used to generate the results for l-consecutive misses on multiprocessors.
 
-task-generator.py contains the task generating routines.
+task-generator.py contains the task generating routines, especially there is a function for generating MATLAB input.
 
 sort_task_set.py contains the task generating routines.
 
