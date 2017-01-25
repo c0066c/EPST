@@ -72,7 +72,7 @@ def probabilisticTest_ptda_pt(tasks, numDeadline, bound):
     x = 0
     res = 0
     for i in tasks:
-        hpTasks = tasks[:x]        
+        hpTasks = tasks[:x]
         x+=1
         resP = ptda_pt(i, hpTasks, 'abnormal_exe', bound)
         seqP.append(resP)
@@ -179,6 +179,49 @@ def ktda_p(task, higherPriorityTasks, criteria, bound): #only for one deadline m
         if minP > probRes: #find out the minimum in k points
             minP = probRes
     return minP
+
+def ktda_k(task, higherPriorityTasks, criteria, window, bound):
+    kpoints = []
+    # pick up k testing points here
+    if window != 1:
+        for i in higherPriorityTasks:
+            for j in range(1, window+1):
+                point = math.floor((j)*task['period']/i['period'])*i['period']
+                kpoints.append(point)
+    else:
+        for i in higherPriorityTasks:
+            point = math.floor(task['period']/i['period'])*i['period']
+            kpoints.append(point)
+
+    if window != 1:
+        kpoints.append((window+1)*task['period'])
+    else:
+        kpoints.append(task['period'])
+
+    '''
+    kpoints.sort()
+    if len(higherPriorityTasks) == 9:
+        print "dtda_points:\n"
+        print kpoints
+    '''
+    # for loop checking k points time
+    minP = 1.
+    for t in kpoints:
+        workload = determineWorkload(task, higherPriorityTasks, criteria, t)
+        if workload <= t:
+            return 0
+        #as WCET does not pass, check if the probability is acceptable
+        fy = float(t)
+        try:
+            res = minimize_scalar(lambda x : Chernoff_bounds(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound]) #find the x with minimum
+            probRes = Chernoff_bounds(task, higherPriorityTasks, fy, res.x) #use x to find the minimal
+        except TypeError:
+            print "TypeError"
+            probRes = 1
+        if minP > probRes: #find out the minimum in k points
+            minP = probRes
+    return minP
+
 
 def kltda(task, higherPriorityTasks, criteria,  numDeadline, oneD, bound):
     #oneD is precalculated outside of function call

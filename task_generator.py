@@ -69,4 +69,4 @@ def taskGeneration_p(numTasks,uTotal):
         print >>fo, json.dumps(PSet)
 	return PSet
 
-#print taskGeneration_p(10, 60)
+print taskGeneration_p(20, 60)

@@ -6,9 +6,9 @@ import numpy as np
 import task_generator
 import mixed_task_builder
 import sort_task_set
-import tda
 import matplotlib.pyplot as plt
 import itertools
+import EPST
 from matplotlib import rcParams
 from matplotlib.backends.backend_pdf import PdfPages
 name='test'
@@ -26,17 +26,18 @@ tasks=[]
 def func_star(a_b):
     """Covert 'f([a,b,c,d,e,f]) to f(a,b,c,d,e,f) call."""
     return insideroutine(*a_b)
-	
+
 def insideroutine(numberOfRuns, fr):
     c_prob = []
     seq_prob = []
     for i in range(numberOfRuns):
         tasks=[]
-        tasks=task_generator.taskGeneration_p(5,60)
+        tasks=task_generator.taskGeneration_p(20,60)
         tasks=mixed_task_builder.hardtaskWCET(tasks, 1.83, fr)
+        print tasks
         #the following part is for testing
         #c_prob.append(cprta.cprta(tasks))
-        seq_prob.append(tda.probabilisticTest_p(tasks, 3, 3))
+        seq_prob.append(EPST.probabilisticTest_p(tasks, 3, 3))
     return [c_prob,seq_prob]
 
 for tib in tasksinBkt:
