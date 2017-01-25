@@ -16,6 +16,9 @@ name='test'
 # Information about the general task set
 tasksinBkt = [5, 10]
 
+# Information about the number of testing runs
+numberOfRuns = 5
+
 # Information about the mixed task set
 wcetF2 = 2.2/1.2
 faultRate = [10**-6.]
@@ -44,7 +47,6 @@ for tib in tasksinBkt:
     perfault = []
     cfault = []
     for fr in faultRate:
-        numberOfRuns = 5
         print('Tasks: ' + repr(tib) +', NumDeadline:'+repr(1)+', FaultRate:'+repr(10**-6.)+', Utilization:'+repr(60))
         rel=[]
         faultrel=[]
@@ -69,7 +71,6 @@ file.write('Runs: ' + repr(500) + '\n')
 file.write('Tasks: ' + repr(tib) + '\n')
 file.write('Num of deadline miss: ' + repr(1) + '\n')
 file.write('Utilization: '+repr(60) + '\n')
-numberOfRuns = 5
 for j in tasksinBkt:
     for i in range(numberOfRuns):
         file.write('Generated '+ repr(j) +'Tasks:'+repr(i)+'\n')
