@@ -95,4 +95,4 @@ def taskGenerationMatlabX(numTasks, uTotal, j):
 
 #print taskGenerationMatlab(20, 60)
 #print taskGenerationMatlab(10, 60)
-print taskGenerationMatlabX(10, 60, 100)
+print taskGenerationMatlabX(10, 70, 100)
