@@ -30,7 +30,7 @@ timpiProbabilisti = [];
         while contor < numarSimulari
             
             %taskSet = generateRandomTaskSetFunction(20, 2, 100);
-            taskSet = givenTaskSetFunction(0, 0, 100);  
+            taskSet = givenTaskSetFunction(0, 0, 100);
             
             if maxUtilization(taskSet) < 2 && maxUtilization(taskSet) > 1
                 
@@ -44,10 +44,13 @@ timpiProbabilisti = [];
             end
             
         end
-        format short;
-        timpiProbabilisti(2-inceput+1, 2-inceput+1) = mean(partialTimes)
-        probRespTime
-      
+        format longE;
+        timpiProbabilisti(2-inceput+1, 2-inceput+1) = mean(partialTimes);        
+        %probRespTime
+        target = length(taskSet); 
+        d=dmp(probRespTime,taskSet{target}{2});
+        dmpVal(d)
+                
     %end
     
 %end
@@ -58,5 +61,3 @@ disp('finished')
 disp('The probabilistic Analysis lasts:')
 
 timpiProbabilisti
-
-

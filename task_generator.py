@@ -83,6 +83,9 @@ def taskGenerationMatlab(numTasks, uTotal):
         j+=1
         fo.write("taskSet{"+str(j)+"}{1} = ["+str(i['execution'])+","+str(i['abnormal_exe'])+";0.999999, 0.000001]\n")
         fo.write("taskSet{"+str(j)+"}{2} = ["+str(i['period'])+"; 1]\n")
-    #print >>fo, json.dumps(PSet)
+    ofile = "taskset-p.txt"
+    fo = open(ofile, "wb")
+    print >>fo, json.dumps(PSet)
 
 #print taskGenerationMatlab(20, 60)
+print taskGenerationMatlab(10, 60)
