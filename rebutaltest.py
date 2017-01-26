@@ -43,7 +43,7 @@ for htf in hardTaskFactor:
                 #resP = EPST.probabilisticTest_ptda(tasks, nd, 3)
                 #timing.log("ptda method ends include opt")
                 timing.log("our method starts include opt")
-                resP = EPST.probabilisticTest_p(tasks, nd, 1)
+                resP = EPST.probabilisticTest_p(tasks, nd, 5)
                 timing.log("our method ends include opt")
                 #this will get the maximum probability among the tasks in a task set.
                 seq_prob.append(resP)
