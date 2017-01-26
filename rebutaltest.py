@@ -32,19 +32,22 @@ for htf in hardTaskFactor:
 
             #read from given input
             ifile = "taskset-p.txt"
-            s = open(ifile, "rb").read()
-            tasks = ast.literal_eval(s)
+            of = open(ifile, "rb")
+            for line in of:
+                tasks = ast.literal_eval(line)
+                #print tasks
+                keepTasks = tasks[:]
 
-            keepTasks = tasks[:]
-            #the following part is for testing
-            #timing.log("ptda method starts include opt")
-            #resP = EPST.probabilisticTest_ptda(tasks, nd, 3)
-            #timing.log("ptda method ends include opt")
-            timing.log("our method starts include opt")
-            resP = EPST.probabilisticTest_p(tasks, nd, 20)
-            timing.log("our method ends include opt")
-            #this will get the maximum probability among the tasks in a task set.
-            print resP
+                #the following part is for testing
+                #timing.log("ptda method starts include opt")
+                #resP = EPST.probabilisticTest_ptda(tasks, nd, 3)
+                #timing.log("ptda method ends include opt")
+                timing.log("our method starts include opt")
+                resP = EPST.probabilisticTest_p(tasks, nd, 1)
+                timing.log("our method ends include opt")
+                #this will get the maximum probability among the tasks in a task set.
+                seq_prob.append(resP)
+            print seq_prob
 '''
         fileName = 'tasks'+repr(5)+'_numMisses'+repr(nd)+'_utilization'+repr(60)
         folder = repr(numberOfRuns)+'/'
