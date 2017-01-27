@@ -40,16 +40,16 @@ timpiProbabilisti = [];
                 probRespTime = probabilisticWorstCaseResponseTime(taskSet, 1);
                 toc;
                 partialTimes(contor) = toc;                
-                
+                target = length(taskSet); 
+                d=dmp(probRespTime,taskSet{target}{2});
+                dmpR(contor)=dmpVal(d);
             end
             
         end
         format longE;
         timpiProbabilisti(2-inceput+1, 2-inceput+1) = mean(partialTimes);        
         %probRespTime
-        target = length(taskSet); 
-        d=dmp(probRespTime,taskSet{target}{2});
-        dmpR(contor)=dmpVal(d);
+        
                 
     %end
     
