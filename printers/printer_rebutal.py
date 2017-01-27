@@ -26,12 +26,12 @@ numDeadline = [1]
 
 numberOfRuns = 100
 
-fileName = 'mp_tasks'+repr(5)+'_utilization'+repr(60)
+fileName = 'mp_tasks'+repr(10)+'_utilization'+repr(60)+'_'+repr(70)
 folder = 'comparison/'
 
 # plot in pdf
 pp = PdfPages(folder + fileName + '.pdf')
-title = 'Tasks:'+repr(5)+', ErrorRates: '+ repr(10**-6.) + ', NumMisses:'+repr(1)
+title = 'Tasks:'+repr(10)+', ErrorRates: '+ repr(10**-6.) + ', NumMisses:'+repr(1)
 plt.title(title, fontsize=20)
 plt.grid(True)
 plt.ylabel('DMP', fontsize=20)

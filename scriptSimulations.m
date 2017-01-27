@@ -10,7 +10,7 @@ inceput = 2;
 
 sfarsit = 2;
 
-numarSimulari=1;
+numarSimulari=100;
 
 
 timpiProbabilisti = [];
@@ -23,14 +23,14 @@ timpiProbabilisti = [];
         
   
         partialTimes = [];
-        
+        dmpR = [];
         
         contor = 0;
         
         while contor < numarSimulari
             
             %taskSet = generateRandomTaskSetFunction(20, 2, 100);
-            taskSet = givenTaskSetFunction(0, 0, 100);
+            taskSet = givenTaskSetFunction(0, 0, 100, contor);
             
             if maxUtilization(taskSet) < 2 && maxUtilization(taskSet) > 1
                 
@@ -49,7 +49,7 @@ timpiProbabilisti = [];
         %probRespTime
         target = length(taskSet); 
         d=dmp(probRespTime,taskSet{target}{2});
-        dmpVal(d)
+        dmpR(contor)=dmpVal(d);
                 
     %end
     
