@@ -1,4 +1,5 @@
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.patches as mpatches
 import random
 import math
@@ -12,7 +13,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 name='test'
 
 # Information about the general task set
-tasksinBkt = [5]
+tasksinBkt = [10]
 
 # Information about the mixed task set
 wcetF2 = 2.2/1.2
@@ -38,6 +39,7 @@ plt.ylabel('DMP', fontsize=20)
 #plt.xlabel('Approaches($U^*$)', fontsize=20)
 ax = plt.subplot()
 ax.set_yscale("log")
+ax.set_ylim([10**-95,10**1])
 ax.tick_params(axis='both', which='major',labelsize=16)
 
 '''
@@ -47,7 +49,7 @@ whisk = mpatches.Patch(color='black', label='Whiskers', linewidth=3)
 plt.legend(handles=[utilization], fontsize=12, frameon=True, loc=3)
 '''
 
-labels = ('CPRTA','EPST-K', 'CRPTA','EPST-K')
+labels = ('CPRTA-resampling','EPST-K', 'CRPTA-resampling','EPST-K')
 #construct the box plot input
 bxinput = []
 #utilization 60%
