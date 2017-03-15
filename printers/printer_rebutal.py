@@ -39,7 +39,7 @@ plt.ylabel('DMP', fontsize=20)
 #plt.xlabel('Approaches($U^*$)', fontsize=20)
 ax = plt.subplot()
 ax.set_yscale("log")
-ax.set_ylim([10**-95,10**1])
+ax.set_ylim([10**-100,10**19])
 ax.tick_params(axis='both', which='major',labelsize=16)
 
 '''
