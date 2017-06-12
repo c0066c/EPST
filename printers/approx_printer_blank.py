@@ -27,7 +27,7 @@ numDeadline = [1]
 
 numberOfRuns = 100
 
-fileName = 'mp_tasks'+repr(5)+'_utilization'+repr(60)
+fileName = 'blank_mp_tasks'+repr(5)+'_utilization'+repr(60)
 folder = 'comparison/'
 
 # plot in pdf
@@ -66,11 +66,11 @@ bxinput.append(c_prob)
 bxinput.append(seq_prob)
 
 #the blue box
-boxprops = dict(linewidth=2, color='blue')
+boxprops = dict(linewidth=2, color='white')
 #the median line
-medianprops = dict(linewidth=2.5, color='red')
-whiskerprops = dict(linewidth=2.5, color='black')
-capprops = dict(linewidth=2.5)
+medianprops = dict(linewidth=2.5, color='white')
+whiskerprops = dict(linewidth=2.5, color='white')
+capprops = dict(linewidth=2.5, color='white')
 
 try:
     ax.boxplot(bxinput, 0, '', labels=labels, boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
@@ -88,7 +88,7 @@ box = mpatches.Patch(color='blue', label='First to Third Quartiles', linewidth=3
 av = mpatches.Patch(color='red', label='Median', linewidth=3)
 whisk = mpatches.Patch(color='black', label='Whiskers', linewidth=3)
 
-plt.legend(handles=[av, box, whisk], fontsize=12, frameon=True, loc=5)
+#plt.legend(handles=[av, box, whisk], fontsize=12, frameon=True, loc=5)
 
 pp.savefig()
 plt.clf()

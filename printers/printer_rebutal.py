@@ -32,7 +32,7 @@ folder = 'comparison/'
 
 # plot in pdf
 pp = PdfPages(folder + fileName + '.pdf')
-title = 'Tasks:'+repr(10)+', ErrorRates: '+ repr(10**-6.) + ', NumMisses:'+repr(1)
+title = 'Tasks: '+repr(10)+', ErrorRate: '+ repr(10**-6.) + ', NumMisses: '+repr(1)
 plt.title(title, fontsize=20)
 plt.grid(True)
 plt.ylabel('DMP', fontsize=20)
@@ -49,7 +49,7 @@ whisk = mpatches.Patch(color='black', label='Whiskers', linewidth=3)
 plt.legend(handles=[utilization], fontsize=12, frameon=True, loc=3)
 '''
 
-labels = ('CPRTA-resampling','EPST-K', 'CRPTA-resampling','EPST-K')
+labels = ('CPRTA-resampling','EPST-K', 'CPRTA-resampling','EPST-K')
 #construct the box plot input
 bxinput = []
 #utilization 60%
@@ -64,17 +64,32 @@ seq_prob = [6.03415306537333e-15, 2.46679111943179e-8, 1.92656222894609e-5, 6.08
 bxinput.append(c_prob)
 bxinput.append(seq_prob)
 
+#the blue box
+boxprops = dict(linewidth=2, color='blue')
+#the median line
+medianprops = dict(linewidth=2.5, color='red')
+whiskerprops = dict(linewidth=2.5, color='black')
+capprops = dict(linewidth=2.5)
+
+
 try:
-    ax.boxplot(bxinput, 0, '', labels=labels)
+    ax.boxplot(bxinput, 0, '', labels=labels, boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
 except ValueError:
     print "ValueError"
 
 ax.vlines(0.5, 0, 1, transform=ax.transAxes )
-ax.text(0.35, 0.04, "$U^*=60\%$", transform=ax.transAxes, size=16 )
-ax.text(0.85, 0.04, "$U^*=70\%$", transform=ax.transAxes, size=16 )
+ax.text(0.32, 0.04, "$U_{sum}^N=60\%$", transform=ax.transAxes, size=16 )
+ax.text(0.82, 0.04, "$U_{sum}^N=70\%$", transform=ax.transAxes, size=16 )
 
 figure = plt.gcf()
 figure.set_size_inches([10, 4])
+
+box = mpatches.Patch(color='blue', label='First to Third Quartiles', linewidth=3)
+av = mpatches.Patch(color='red', label='Median', linewidth=3)
+whisk = mpatches.Patch(color='black', label='Whiskers', linewidth=3)
+
+plt.legend(handles=[av, box, whisk], fontsize=12, frameon=True, loc=5)
+
 
 pp.savefig()
 plt.clf()
