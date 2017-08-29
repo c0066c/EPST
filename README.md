@@ -21,7 +21,7 @@
 - simple_approxError.py heuristically demonstrates the approx. error we made with given inputs.
 
 # Error in my paper [2]
-- in simple_test.py, P^A_3 for task 3 in the paper was reported as 10^-6. However in fact it was the result using 10^-5 for P^A_3. 
+- in simple_test.py, P^A_1 and P^A_2 in the paper was reported as 10^-5. However in fact the results was all based on 10^-6. 
 
 # Reference
 - [1] D. Maxim and L. Cucu-Grosjean. Response time analysis for fixed-priority tasks with multiple probabilistic parameters. RTSS'13. The source code of CPRTA and the resampling feature is from here: https://who.rocq.inria.fr/Dorin.Maxim/tool.html

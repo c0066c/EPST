@@ -20,12 +20,12 @@ t=[]
 def selectedpoints(targetIdx):
 #    math.ceil()
     tarT=PSet[targetIdx]
-        
+
     for i in range(targetIdx):
         checkT = PSet[i]
         t = math.floor(tarT['period']/checkT['period'])*checkT['period']
         Tpoints.append(t)
-    
+
     Tpoints.append(tarT['period'])
 
 def taskInit():
@@ -36,6 +36,7 @@ def taskInit():
 #    pair['AWCET'] = 8
     pair['NWCET'] = 4
     pair['AWCET'] = 6
+    # Errata: in the paper the setting was 10^-5 but the results was based on 10^-6.
     pair['prob'] = 0.000001
     PSet.append(pair)
     #task 2
@@ -45,25 +46,26 @@ def taskInit():
     pair['AWCET'] = 15
 #    pair['NWCET'] = 2
 #    pair['AWCET'] = 3
+    # Errata: in the paper the setting was 10^-5 but the results was based on 10^-6.
     pair['prob'] = 0.000001
     PSet.append(pair)
     #task 3
-    
+
     pair = {}
     pair['period'] = 75
     pair['NWCET'] = 10
     pair['AWCET'] = 30
     pair['prob'] = 0.000001
     PSet.append(pair)
-    
 
-def Chernoff_bounds(a, t):
+
+def Chernoff_bounds(t, s):
     timing.log("Chernoff bound starts")
     '''
-    return the probability, input the targeted time point a and t
+    return the probability, input the targeted time point t and s
     1. first calculate the total number of jobs among all tasks
     2. calculate mgf function for each task with their corresponding number jobs in nlist
-    3. using input t \in {0, b} to find the minimal result
+    3. using input s \in {0, b} to find the minimal result
     '''
     #input a is the selected point
     prob = 1.0
@@ -74,11 +76,11 @@ def Chernoff_bounds(a, t):
     mgf = lambdify((c1, c2, x, p), expr)
     nlist=[]
     for i in range(n):
-        nlist.append(math.ceil(a/PSet[i]['period'])) 
+        nlist.append(math.ceil(t/PSet[i]['period']))
     for i in nlist:
-        prob = prob * (mgf(PSet[count]['NWCET'], PSet[count]['AWCET'], t, PSet[count]['prob']))**int(i)
+        prob = prob * (mgf(PSet[count]['NWCET'], PSet[count]['AWCET'], s, PSet[count]['prob']))**int(i)
         count += 1
-    prob = prob/exp(t*a)
+    prob = prob/exp(s*t)
 
     timing.log("Chernoff bound ends")
     return prob
@@ -107,9 +109,9 @@ plt.show()
 
 for y in Tpoints:
     fy=float(y)
-    res=minimize_scalar(lambda x : Chernoff_bounds(fy,x), method='bounded', bounds=[0, 10]) 
+    res=minimize_scalar(lambda x : Chernoff_bounds(fy,x), method='bounded', bounds=[0, 10])
     probRes=Chernoff_bounds(fy, res.x)
-    print "On time point "+str(fy)+" the minimal probability is "+str(probRes)+" when t is "+str(res.x)
+    print "On time point "+str(fy)+" the minimal probability is "+str(probRes)+" when s is "+str(res.x)
     if minP > probRes:
         minP = probRes
 print "Among all the selected points, the minimal upper bound is:"+str(minP)
