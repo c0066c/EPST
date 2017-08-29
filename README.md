@@ -20,5 +20,10 @@
 - simple_test.py heuristically demonstrates the usage of the proposed approaches.
 - simple_approxError.py heuristically demonstrates the approx. error we made with given inputs.
 
+# Error in my paper [2]
+- in simple_test.py, P^A_3 for task 3 in the paper was reported as 10^-6. However in fact it was the result using 10^-5 for P^A_3. 
+
 # Reference
 - [1] D. Maxim and L. Cucu-Grosjean. Response time analysis for fixed-priority tasks with multiple probabilistic parameters. RTSS'13. The source code of CPRTA and the resampling feature is from here: https://who.rocq.inria.fr/Dorin.Maxim/tool.html
+- [2] K. H. Chen and J. J. Chen, "Probabilistic schedulability tests for uniprocessor fixed-priority scheduling under soft errors," 2017 12th IEEE International Symposium on Industrial Embedded Systems (SIES), Toulouse, France, 2017, pp. 1-8.
+
