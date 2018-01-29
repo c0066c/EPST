@@ -38,10 +38,8 @@ def Hoeffding_inequality(task, higherPriorityTasks, a, t):
     2. calculate mgf function for each task with their corresponding number jobs in nlist
     3. using input t \in {0, b} to find the minimal result
     '''
-
-    return prob
+    pass
 
 def Bernstein_inequality(task, higherPriorityTasks, a, t):
     #a is the selected points, t is the testing t, n is the total number of involved tasks
-    return prob
-
+    pass

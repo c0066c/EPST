@@ -3,95 +3,9 @@ import random
 import math
 import numpy as np
 import sys, getopt
-import matplotlib.pyplot as plt
 from scipy.optimize import *
 from sympy import *
-from bounds import *
-
-def ktda_pt(task, higherPriorityTasks, criteria, bound): #only for one deadline miss
-    kpoints = []
-    # pick up k testing points here
-    for i in higherPriorityTasks:
-        point = math.floor(task['period']/i['period'])*i['period']
-        kpoints.append(point)
-    kpoints.append(task['period'])
-
-    # for loop checking k points time
-    minP = 1.
-    for t in kpoints:
-        workload = determineWorkload(task, higherPriorityTasks, criteria, t)
-        if workload <= t:
-            return 0
-        #as WCET does not pass, check if the probability is acceptable
-        fy = float(t)
-#        res = minimize_scalar(lambda x : Chernoff_bounds(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound])
-        probRes = Chernoff_bounds(task, higherPriorityTasks, fy, 1)
-        if minP > probRes: #find out the minimum in k points
-            minP = probRes
-    return minP
-
-def probabilisticTest_pt(tasks, numDeadline, bound):
-    seqP = []
-    x = 0
-    res = 0
-    for i in tasks:
-        hpTasks = tasks[:x]
-        x+=1
-        if numDeadline == 1:
-            resP = ktda_pt(i, hpTasks, 'abnormal_exe', bound)
-        else:
-            print "only for one deadline"
-        seqP.append(resP)
-        res = resP
-    return res
-
-def ptda_pt(task, higherPriorityTasks, criteria, bound): #only for one deadline miss
-    # while loop checking all points time
-    kpoints = []
-    # pick up k testing points here
-    for i in higherPriorityTasks:
-        for r in range(1, int(math.floor(task['period']/i['period']))+1):
-            point = r*i['period']
-            kpoints.append(point)
-    kpoints.append(task['period'])
-#    print kpoints
-    minP = 1.
-    for t in kpoints:
-        workload = determineWorkload(task, higherPriorityTasks, criteria, t)
-        if workload <= t:
-            return 0
-        #as WCET does not pass, check if the probability is acceptable
-        fy = float(t)
-        probRes = Chernoff_bounds(task, higherPriorityTasks, fy, 1)
-        t = workload
-        if minP > probRes: #find out the minimum in k points
-            minP = probRes
-    return minP
-
-def probabilisticTest_ptda_pt(tasks, numDeadline, bound):
-    seqP = []
-    x = 0
-    res = 0
-    for i in tasks:
-        hpTasks = tasks[:x]
-        x+=1
-        resP = ptda_pt(i, hpTasks, 'abnormal_exe', bound)
-        seqP.append(resP)
-
-        res = resP
-    return res
-
-def probabilisticTest_po(tasks, numDeadline, bound):
-    seqP = []
-    x = 0
-    for i in tasks:
-        if x != len(tasks)-1:
-            x+=1
-            continue
-        hpTasks = tasks[:x]
-        resP = ktda_p(i, hpTasks, 'abnormal_exe', bound)
-        seqP.append(resP)
-    return max(seqP)
+from bounds import Chernoff_bounds
 
 def determineWorkload(task, higherPriorityTasks, criteria, time):
     workload = task[criteria]
@@ -101,40 +15,6 @@ def determineWorkload(task, higherPriorityTasks, criteria, time):
         #print("jobs " + repr(jobs) + " wl task " + repr(jobs * i[criteria]) + " total workload " + repr(workload))
     return workload
 
-def probabilisticTest_ptda(tasks, numDeadline, bound):
-    seqP = []
-    x = 0
-    for i in tasks:
-        hpTasks = tasks[:x]
-        resP = ptda(i, hpTasks, 'abnormal_exe', bound)
-        seqP.append(resP)
-        x+=1
-
-    return max(seqP)
-
-def ptda(task, higherPriorityTasks, criteria, bound): #only for one deadline miss
-    # while loop checking all points time
-    kpoints = []
-    # pick up k testing points here
-    for i in higherPriorityTasks:
-        for r in range(1, int(math.floor(task['period']/i['period']))+1):
-            point = r*i['period']
-            kpoints.append(point)
-    kpoints.append(task['period'])
-#    print kpoints
-    minP = 1.
-    for t in kpoints:
-        workload = determineWorkload(task, higherPriorityTasks, criteria, t)
-        if workload <= t:
-            return 0
-        #as WCET does not pass, check if the probability is acceptable
-        fy = float(t)
-        res = minimize_scalar(lambda x : Chernoff_bounds(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound])
-        probRes = Chernoff_bounds(task, higherPriorityTasks, fy, res.x)
-        t = workload
-        if minP > probRes: #find out the minimum in k points
-            minP = probRes
-    return minP
 
 def ktda_p(task, higherPriorityTasks, criteria, bound): #only for one deadline miss
     kpoints = []
