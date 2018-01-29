@@ -14,7 +14,6 @@ def Chernoff_bounds(task, higherPriorityTasks, t, s):
     return the upper bounded probability, input the targeted time point t and a real number s
     1. first calculate the total number of jobs among all tasks
     2. calculate mgf function for each task with their corresponding number jobs in nlist
-    3. using input t \in {0, b} to find the minimal result
     '''
     prob = 1.0
     #now sumN is the total number of jobs among all the tasks.
@@ -31,12 +30,15 @@ def Chernoff_bounds(task, higherPriorityTasks, t, s):
     return prob
 
 def Hoeffding_inequality(task, higherPriorityTasks, t):
-    #t is the tested time t, s is a real number, n is the total number of involved tasks
+    #t is the tested time t, and n is the total number of involved tasks
     '''
     return the upper bounded probability, input the targeted time point t.
+    The detailed implementation can be referred to Theorem 6.
+    1. first define two lambdas for the expected value of S_t and (b-a)**2
+    2. accumulate them in hep(tau_k)
     '''
     prob = 1.0
-    expdSt = 0.0
+    expedSt = 0.0
     sumvar = 0.0
     c1, c2, p = symbols("c1, c2, p")
     sumr = lambdify((c1, c2, p), c1*(1-p)+c2*p)
@@ -54,7 +56,34 @@ def Hoeffding_inequality(task, higherPriorityTasks, t):
 
 
 def Bernstein_inequality(task, higherPriorityTasks, t):
-    #t is the tested time t, s is a real number, n is the total number of involved tasks
-    prob = 1.0
+    #t is the tested time t, and n is the total number of involved tasks
+    '''
+    return the upper bounded probability, input the targeted time point t.
+    The detailed implementation can be referred to Theorem 8.
+    1. define lambda functions for E[C] and E[C**2]
+    2. get the corresponding values for K and VarC and E[St]
+    '''
+    c1, c2, p = symbols("c1, c2, p")
+    sumr = lambdify((c1, c2, p), c1*(1-p)+c2*p)
+    powerC = lambdify((c1, c2, p), c1*c1*(1-p)+c2*c2*p)
 
+    prob = 1.0
+    expedSt = 0.0
+    varC = 0.0
+    K = 0.0
+    tmpC = 0.0
+    for i in higherPriorityTasks:
+        expedC = sumr(i['execution'], i['abnormal_exe'], i['prob'])
+        varC = varC + (powerC(i['execution'], i['abnormal_exe'], i['prob'])-(expedC)**2)*int(math.ceil(t/i['period']))
+        expedSt = expedSt + expedC*int(math.ceil(t/i['period']))
+        tmpK = max(i['execution']-expedC, i['abnormal_exe']-expedC)
+        if tmpK > K:
+            K = tmpK
+    expedC = sumr(task['execution'], task['abnormal_exe'], task['prob'])
+    varC = varC + (powerC(task['execution'], task['abnormal_exe'], task['prob'])-(expedC)**2)*int(math.ceil(t/task['period']))
+    expedSt = expedSt + expedC*int(math.ceil(t/task['period']))
+    tmpK = max(task['execution']-expedC, task['abnormal_exe']-expedC)
+    if tmpK > K:
+        K = tmpK
+    prob = exp(-((t-expedSt)**2/2)/(varC+K*(t-expedSt)/3))
     return prob

@@ -5,7 +5,7 @@ import numpy as np
 import sys, getopt
 from scipy.optimize import *
 from sympy import *
-from bounds import Chernoff_bounds
+from bounds import *
 
 def determineWorkload(task, higherPriorityTasks, criteria, time):
     workload = task[criteria]
@@ -16,7 +16,7 @@ def determineWorkload(task, higherPriorityTasks, criteria, time):
     return workload
 
 
-def ktda_p(task, higherPriorityTasks, criteria, bound): #only for one deadline miss
+def ktda_p(task, higherPriorityTasks, criteria, ieq, bound): #only for one deadline miss
     kpoints = []
     # pick up k testing points here
     for i in higherPriorityTasks:
@@ -32,13 +32,24 @@ def ktda_p(task, higherPriorityTasks, criteria, bound): #only for one deadline m
             return 0
         #as WCET does not pass, check if the probability is acceptable
         fy = float(t)
-        res = minimize_scalar(lambda x : Chernoff_bounds(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound])
-        probRes = Chernoff_bounds(task, higherPriorityTasks, fy, res.x)
+        if ieq == Chernoff_bounds:
+            try:
+                res = minimize_scalar(lambda x : ieq(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound])
+                probRes = ieq(task, higherPriorityTasks, fy, res.x)
+            except TypeError:
+                print "TypeError"
+                probRes = 1
+        elif ieq == Hoeffding_inequality:
+            probRes = ieq(task, higherPriorityTasks, fy)
+        elif ieq == Bernstein_inequality:
+            probRes = ieq(task, higherPriorityTasks, fy)
+        else:
+            raise "Error: You use a bound without implementation."
         if minP > probRes: #find out the minimum in k points
             minP = probRes
     return minP
 
-def ktda_k(task, higherPriorityTasks, criteria, window, bound):
+def ktda_k(task, higherPriorityTasks, criteria, window, ieq, bound):
     kpoints = []
     # pick up k testing points here
     if window != 1:
@@ -70,18 +81,27 @@ def ktda_k(task, higherPriorityTasks, criteria, window, bound):
             return 0
         #as WCET does not pass, check if the probability is acceptable
         fy = float(t)
-        try:
-            res = minimize_scalar(lambda x : Chernoff_bounds(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound]) #find the x with minimum
-            probRes = Chernoff_bounds(task, higherPriorityTasks, fy, res.x) #use x to find the minimal
-        except TypeError:
-            print "TypeError"
-            probRes = 1
+
+        if ieq == Chernoff_bounds:
+            try:
+                res = minimize_scalar(lambda x : ieq(task, higherPriorityTasks, fy, x), method='bounded', bounds=[0,bound]) #find the x with minimum
+                probRes = ieq(task, higherPriorityTasks, fy, res.x) #use x to find the minimal
+            except TypeError:
+                print "TypeError"
+                probRes = 1
+        elif ieq == Hoeffding_inequality:
+            probRes = ieq(task, higherPriorityTasks, fy)
+        elif ieq == Bernstein_inequality:
+            probRes = ieq(task, higherPriorityTasks, fy)
+        else:
+            raise "Error: You use a bound without implementation."
+
         if minP > probRes: #find out the minimum in k points
             minP = probRes
     return minP
 
 
-def kltda(task, higherPriorityTasks, criteria,  numDeadline, oneD, bound):
+def kltda(task, higherPriorityTasks, criteria,  numDeadline, oneD, ieq, bound):
     #oneD is precalculated outside of function call
     if numDeadline == 0:
         return 1
@@ -90,20 +110,20 @@ def kltda(task, higherPriorityTasks, criteria,  numDeadline, oneD, bound):
     else:
         maxi = 0.
         for w in range(0, numDeadline):
-            tmpP=ktda_k(task, higherPriorityTasks, criteria,  numDeadline-w, bound) * kltda(task, higherPriorityTasks, criteria, w, oneD, bound)
+            tmpP=ktda_k(task, higherPriorityTasks, criteria,  numDeadline-w, ieq, bound) * kltda(task, higherPriorityTasks, criteria, w,  oneD,  bound)
             if(tmpP > maxi):
                 maxi = tmpP
         return maxi
 
-def probabilisticTest_p(tasks, numDeadline, bound):
+def probabilisticTest_p(tasks, numDeadline, ieq, bound=1):
     seqP = []
     x = 0
     for i in tasks:
         hpTasks = tasks[:x]
         if numDeadline == 1:
-            resP = ktda_p(i, hpTasks, 'abnormal_exe', bound)
+            resP = ktda_p(i, hpTasks, 'abnormal_exe', ieq, bound)
         else:
-            resP = kltda(i, hpTasks, 'abnormal_exe',  numDeadline, ktda_p(i, hpTasks, 'abnormal_exe', bound),bound)
+            resP = kltda(i, hpTasks, 'abnormal_exe',  numDeadline, ktda_p(i, hpTasks, 'abnormal_exe', ieq, bound),bound)
         seqP.append(resP)
         x+=1
     return max(seqP)
