@@ -30,3 +30,18 @@ def Chernoff_bounds(task, higherPriorityTasks, a, t):
 
     return prob
 
+def Hoeffding_inequality(task, higherPriorityTasks, a, t):
+    #a is the selected points, t is the testing t, n is the total number of involved tasks
+    '''
+    return the probability, input the targeted time point a and t
+    1. first calculate the total number of jobs among all tasks
+    2. calculate mgf function for each task with their corresponding number jobs in nlist
+    3. using input t \in {0, b} to find the minimal result
+    '''
+
+    return prob
+
+def Bernstein_inequality(task, higherPriorityTasks, a, t):
+    #a is the selected points, t is the testing t, n is the total number of involved tasks
+    return prob
+

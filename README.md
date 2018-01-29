@@ -2,6 +2,7 @@
 
 # Proposed and compared approaches:
 - EPST.py contains the proposed approaches.
+- bounds.py contains different bounds related to the Chernoff bound.
 - task-generator.py contains the task generating routines, especially for generating MATLAB input [1].
 - sort_task_set.py contains the task generating routines.
 - mp-frVsProb.py is used to generate the results on multiprocessors.
@@ -9,7 +10,10 @@
 - cprta.py contains the approaches implemented in Python [1].
 - scriptSimulations.m is the modified simulation executable from [1].
 - dmp.m is almost the original one but the redundant output behavior is disable for readability.
-- givenTaskSetFunction.m contains the function for using our generated input. The given input from taskset-matlabs100u60.m / taskset-matlabs100u70.m  should be renamed as "INPUT.m" in teh same folder.
+- givenTaskSetFunction.m contains the function for using our generated input. The given input from taskset-matlabs100u60.m / taskset-matlabs100u70.m  should be renamed as "INPUT.m" in the same folder.
+
+# How to use?
+- python mp-frVsProb.py will derive the results into a folder named comparison.
 
 # Experimental setup in the paper:
 - timing.py contains the time measument routines.
