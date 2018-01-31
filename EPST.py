@@ -21,7 +21,8 @@ def ktda_p(task, higherPriorityTasks, criteria, ieq, bound): #only for one deadl
     # pick up k testing points here
     for i in higherPriorityTasks:
         point = math.floor(task['period']/i['period'])*i['period']
-        kpoints.append(point)
+        if point != 0.0:
+            kpoints.append(point)
     kpoints.append(task['period'])
 
     # for loop checking k points time
@@ -56,16 +57,16 @@ def ktda_k(task, higherPriorityTasks, criteria, window, ieq, bound):
         for i in higherPriorityTasks:
             for j in range(1, window+1):
                 point = math.floor((j)*task['period']/i['period'])*i['period']
-                kpoints.append(point)
+                if point != 0.0:
+                    kpoints.append(point)
+        kpoints.append((window+1)*task['period'])
     else:
         for i in higherPriorityTasks:
             point = math.floor(task['period']/i['period'])*i['period']
-            kpoints.append(point)
-
-    if window != 1:
-        kpoints.append((window+1)*task['period'])
-    else:
+            if point != 0.0:
+                kpoints.append(point)
         kpoints.append(task['period'])
+
 
     '''
     kpoints.sort()

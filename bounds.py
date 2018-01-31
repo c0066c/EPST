@@ -51,7 +51,10 @@ def Hoeffding_inequality(task, higherPriorityTasks, t):
     expedSt = expedSt + sumr(task['execution'], task['abnormal_exe'], task['prob'])*int(math.ceil(t/task['period']))
     sumvar = sumvar + vari(task['execution'], task['abnormal_exe'])*int(math.ceil(t/task['period']))
 
-    prob = exp(-2*(t-expedSt)**2/sumvar)
+    if t-expedSt > 0:
+        prob = exp(-2*(t-expedSt)**2/sumvar)
+    else:
+        prob = 1
     return prob
 
 
@@ -85,5 +88,8 @@ def Bernstein_inequality(task, higherPriorityTasks, t):
     tmpK = max(task['execution']-expedC, task['abnormal_exe']-expedC)
     if tmpK > K:
         K = tmpK
-    prob = exp(-((t-expedSt)**2/2)/(varC+K*(t-expedSt)/3))
+    if t-expedSt > 0:
+        prob = exp(-((t-expedSt)**2/2)/(varC+K*(t-expedSt)/3))
+    else:
+        prob = 1
     return prob
