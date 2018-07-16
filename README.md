@@ -1,5 +1,6 @@
 # Probabilisitc Schedulability Test in SIES'17
 - Most of codes are refined in RTCSA'18 repo: https://github.com/kuanhsunchen/MissRateSimulator
+- The paper can be found in https://ieeexplore.ieee.org/abstract/document/7993392/
 
 # Proposed and compared approaches:
 - EPST.py contains the proposed approaches.
