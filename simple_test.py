@@ -18,8 +18,8 @@ PSet = []
 Tpoints = []
 overT = []
 t=[]
-maxS = 10
-delta = 0.1
+maxS = 50
+delta = 0.5
 
 def selectedpoints(targetIdx):
 #    math.ceil()
@@ -70,7 +70,7 @@ def Chernoff_bounds(a, t):
     3. using input t \in {0, b} to find the minimal result
     '''
     #input a is the selected point
-    prob = 1.0
+    prob = np.float128(1.0)
     prob = prob/exp(t*a)
     count = 0
     #now sumN is the total number of jobs among all the tasks.
@@ -81,7 +81,7 @@ def Chernoff_bounds(a, t):
     for i in range(n):
         nlist.append(np.ceil(a/PSet[i]['period']))
     for i in nlist:
-        prob = prob * (mgf(PSet[count]['NWCET'], PSet[count]['AWCET'], t, PSet[count]['prob']))**int(i)
+        prob = prob * np.float128(mgf(PSet[count]['NWCET'], PSet[count]['AWCET'], t, PSet[count]['prob']))**int(i)
         count += 1
     #timing.log("Chernoff bound ends")
     return prob
