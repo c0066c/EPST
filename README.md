@@ -20,7 +20,7 @@
 
 # Error in my paper [2]
 - in simple_test.py, P^A_1 and P^A_2 in the paper was reported as 10^-5. However in fact the results was all based on 10^-6. 
-- Which real value s should be selected is out of scope of this paper. Currently I use the range from (0, 10] with step 0.1 to get the minimum. 
+- Which real value s should be selected is out of scope of this paper. Currently I use the range from (0, 10] with step 0.1 to get the minimum. Since any s larger than 0 is sutiable for the Chernoff bound, it is another story to find out a specific s giving the optimal result.
 
 # Matlab files (These can be found in matlab folder):
 - scriptSimulations.m is the modified simulation executable from [1].
