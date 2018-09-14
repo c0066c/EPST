@@ -14,12 +14,12 @@ def Chernoff_bounds(task, higherPriorityTasks, t, s):
     1. first calculate the total number of jobs among all tasks
     2. calculate mgf function for each task with their corresponding number jobs in nlist
     '''
-    prob = np.float128(1.0)
+    prob = 1.0
     prob = prob/exp(s*t)
     #now sumN is the total number of jobs among all the tasks.
     c1, c2, x, p = symbols("c1, c2, x, p")
     expr = exp(c1*x)*(1-p)+exp(c2*x)*p
-    mgf = lambdify((c1, c2, x, p), expr)
+    mgf = lambdify((c1, c2, x, p), sympify(expr), 'mpmath')
     #with time ceil(), what's the # of released jobs
     for i in higherPriorityTasks:
         prob = prob * np.float128(mgf(i['execution'], i['abnormal_exe'], s, i['prob']))**int(np.ceil(t/i['period']))
