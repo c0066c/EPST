@@ -22,7 +22,7 @@ numberOfRuns  = 500
 nd = 2
 percentageU = 60
 perfault = []
-title = 'Tasks: '+ repr(10) + ', NumMisses:'+repr(nd) + ', Utilization:'+repr(percentageU)+'%'
+title = 'Tasks: '+ repr(10) + ', NumMisses:'+repr(nd) + ', $U^N_{sum}$:'+repr(percentageU)+'%'
 
 faultRate = [10**-6., 10**-7., 10**-8., 10**-9.]
 
@@ -49,12 +49,13 @@ print asymmetric_error
 
 plt.title(title, fontsize=20)
 plt.grid(True)
-if nd == 1:
-    plt.ylabel('Maximum DMP', fontsize=24)
-else:
-    #plt.ylabel('Maximum '+repr(nd)+'-consecutive DMP', fontsize=22)
-    pass
-plt.xlabel('Error rate', fontsize=22)
+plt.ylabel('Calculated '+repr(nd)+'-consecutive DMP', fontsize=22)
+#if nd == 1:
+#    plt.ylabel('Maximum DMP', fontsize=24)
+#else:
+#    #plt.ylabel('Maximum '+repr(nd)+'-consecutive DMP', fontsize=22)
+#    pass
+plt.xlabel('Fault rate $P^A_i$', fontsize=22)
 ax = plt.subplot()
 ax.set_yscale("log")
 ax.tick_params(axis='both', which='major',labelsize=20)
@@ -64,7 +65,7 @@ try:
 except ValueError:
     print "ValueError"
 figure = plt.gcf()
-figure.set_size_inches([10,6])
+figure.set_size_inches([11,7])
 pp.savefig()
 plt.clf()
 pp.close()

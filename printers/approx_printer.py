@@ -17,8 +17,6 @@ tasksinBkt = [5]
 
 # Information about the mixed task set
 wcetF2 = 2.2/1.2
-wcetF3 = 3.4/1.2
-wcetF4 = 1.7/1.4
 
 faultRate = [10**-6.]
 
@@ -32,10 +30,10 @@ folder = 'comparison/'
 
 # plot in pdf
 pp = PdfPages(folder + fileName + '.pdf')
-title = 'Tasks: '+repr(5)+', ErrorRate: '+ repr(10**-6.) + ', NumMisses: '+repr(1)
+title = 'Tasks: '+repr(5)+', FaultRate: '+ repr(10**-6.) + ', NumMisses: '+repr(1)
 plt.title(title, fontsize=20)
 plt.grid(True)
-plt.ylabel('DMP', fontsize=20)
+plt.ylabel('Calculated DMP', fontsize=20)
 #plt.xlabel('Approaches($U^*$)', fontsize=20)
 ax = plt.subplot()
 ax.set_yscale("log")
@@ -49,7 +47,7 @@ whisk = mpatches.Patch(color='black', label='Whiskers', linewidth=3)
 plt.legend(handles=[utilization], fontsize=12, frameon=True, loc=3)
 '''
 
-labels = ('CPRTA','EPST-K', 'CPRTA','EPST-K')
+labels = ('CPRTA','Chernoff-K', 'CPRTA','Chernoff-K')
 #construct the box plot input
 bxinput = []
 #utilization 60%
