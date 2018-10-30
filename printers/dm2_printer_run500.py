@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 import matplotlib
+import matplotlib.patches as mpatches
 from matplotlib import rcParams
 from matplotlib.backends.backend_pdf import PdfPages
 #matplotlib.use('Agg')
@@ -60,12 +61,27 @@ ax = plt.subplot()
 ax.set_yscale("log")
 ax.tick_params(axis='both', which='major',labelsize=20)
 labels = ('$10^{-6}$','$10^{-7}$', '$10^{-8}$','$10^{-9}$')
+
+#the blue box
+boxprops = dict(linewidth=2, color='blue')
+#the median line
+medianprops = dict(linewidth=2.5, color='red')
+whiskerprops = dict(linewidth=2.5, color='black')
+capprops = dict(linewidth=2.5)
+
 try:
-    ax.boxplot(perfault, 0, '', labels=labels)
+    ax.boxplot(perfault, 0, '', labels=labels, boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
 except ValueError:
     print "ValueError"
 figure = plt.gcf()
 figure.set_size_inches([11,7])
+
+# box = mpatches.Patch(color='blue', label='First to Third Quartiles', linewidth=3)
+# av = mpatches.Patch(color='red', label='Median', linewidth=3)
+# whisk = mpatches.Patch(color='black', label='Whiskers', linewidth=3)
+
+# plt.legend(handles=[av, box, whisk], fontsize=12, frameon=True, loc=5)
+
 pp.savefig()
 plt.clf()
 pp.close()

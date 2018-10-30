@@ -58,8 +58,16 @@ ax = plt.subplot()
 ax.set_yscale("log")
 ax.tick_params(axis='both', which='major',labelsize=20)
 labels = ('$10^{-6}$','$10^{-7}$', '$10^{-8}$','$10^{-9}$')
+
+#the blue box
+boxprops = dict(linewidth=2, color='blue')
+#the median line
+medianprops = dict(linewidth=2.5, color='red')
+whiskerprops = dict(linewidth=2.5, color='black')
+capprops = dict(linewidth=2.5)
+
 try:
-    ax.boxplot(perfault, 0, '', labels=labels)
+    ax.boxplot(perfault, 0, '', labels=labels, boxprops=boxprops, whiskerprops=whiskerprops, capprops=capprops, medianprops=medianprops)
 except ValueError:
     print "ValueError"
 figure = plt.gcf()
